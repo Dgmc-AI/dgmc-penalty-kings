@@ -20,7 +20,7 @@ Public game: https://dgmc-penalty-kings.vercel.app
 
 Close-up browser inspection covered ready, kicking, full diving and celebration poses. The fingertip-to-thigh and shirt-to-arm skinning artifacts were removed. The final kick refinement was separately inspected at t=0.15, 0.35, 0.55, 0.70 and 1.00. Maximum measured mesh edge was 0.20945 m (an unchanged sock edge) across these poses, dives and celebrations; no long arm-to-hip triangles remained.
 
-The full regression run preceded the final knee/contact refinement. Final built deployment checks are recorded in the pull request and release report before merge/release completion.
+The full regression run preceded the final knee/contact refinement. After that refinement, full-match checks passed on the deployed Git preview on desktop, iPhone WebKit and iPad WebKit. Deployed JavaScript and CSS hashes matched the local production build. An initial desktop network assertion incorrectly counted Vercel preview-toolbar requests; the assertion now checks game asset requests, and the desktop rerun passed. All three crowd reaction types played during the desktop rerun. Final public-production verification is recorded in PR #1 and the release report.
 
 ## Test environment
 

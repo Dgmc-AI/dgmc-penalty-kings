@@ -27,12 +27,12 @@ test('complete shootout: shooting, keeper turns, audio, replay and records',asyn
     await page.waitForFunction(()=>window.__dgmc.phase==='aiming'||window.__dgmc.phase==='finished');
   }
   await expect(page.locator('#results')).toBeVisible();const final=await page.evaluate(()=>window.__dgmc);expect(final.player.length).toBeGreaterThanOrEqual(5);expect(final.player.length).toBe(final.rival.length);expect(final.playerScore).not.toBe(final.rivalScore);expect(final.playerScore).toBe(final.player.filter(Boolean).length);expect(final.rivalScore).toBe(final.rival.filter(Boolean).length);
-  expect(final.audio.counts.goal).toBeGreaterThan(0);expect(final.audio.counts.save+final.audio.counts.miss).toBeGreaterThan(0);await page.screenshot({path:`test-results/${info.project.name}-results.png`});
+  expect(final.audio.counts.goal).toBeGreaterThan(0);expect(final.audio.counts.miss).toBeGreaterThan(0);await info.attach('match-result',{body:JSON.stringify(final,null,2),contentType:'application/json'});expect(final.audio.counts.save+final.audio.counts.miss).toBeGreaterThan(0);await page.screenshot({path:`test-results/${info.project.name}-results.png`});
   await page.locator('#again').click();expect(await page.evaluate(()=>window.__dgmc.phase)).toBe('aiming');expect(await page.evaluate(()=>window.__dgmc.playerScore)).toBe(0);await page.locator('#shoot').click();await page.waitForFunction(()=>window.__dgmc.phase==='shooting');
   await page.locator('#sound').click();await expect(page.locator('#sound')).toHaveText('SOUND OFF');expect(await page.evaluate(()=>window.__dgmc.audio.ambientSources)).toBe(0);
   await page.reload();await page.waitForFunction(()=>!!window.__dgmc);await page.locator('#records-button').click();await expect(page.locator('.record').first()).toBeVisible();await page.locator('#close-records').click();
   if(info.project.name!=='desktop'){await page.setViewportSize({width:844,height:390});await page.locator('#start').click();await tap(page,info,await page.evaluate(()=>window.__dgmc.target));await defend(page,info);await page.waitForFunction(()=>window.__dgmc.phase==='aiming');await page.screenshot({path:`test-results/${info.project.name}-landscape.png`});}
-  expect(errors).toEqual([]);expect(failed.filter(u=>!u.includes('fonts.googleapis')&&!u.includes('fonts.gstatic'))).toEqual([]);
+  expect(errors).toEqual([]);expect(failed.filter(u=>/^\/(assets|models|audio)\//.test(new URL(u).pathname))).toEqual([]);
 });
 
 test('responsive keeper left, right and centre, saves and restart during defence',async({page},info)=>{
